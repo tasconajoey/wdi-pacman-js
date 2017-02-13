@@ -1,6 +1,7 @@
 // Setup initial game stats
 var score = 0;
 var lives = 2;
+var powerPellets = 4;
 
 
 // Define your ghosts here
@@ -38,6 +39,7 @@ var clyde = {
 
 // replace this comment with your four ghosts setup as objects
 
+var ghosts = [inky, blinky, pinky, clyde];
 
 // Draw the screen functionality
 function drawScreen() {
@@ -55,12 +57,28 @@ function clearScreen() {
 
 function displayStats() {
   console.log('Score: ' + score + '     Lives: ' + lives);
+  console.log('Power-Pellets: ' + powerPellets);
 }
 
 function displayMenu() {
   console.log('\n\nSelect Option:\n');  // each \n creates a new line
   console.log('(d) Eat Dot');
+  if (powerPellets > 0) {
+    console.log('(p) Eat Power-Pellet');
+  } else {
+    console.log('')
+  }
+
+  for (var step = 0; step < ghosts.length; step++) {
+    if (ghosts[step].edible) {
+      console.log('(' + ghosts[step].menu_option + ') Eat ' + ghosts[step].name + ' (edible)');
+    } else {
+      console.log('(' + ghosts[step].menu_option + ') Eat ' + ghosts[step].name + ' (inedible)');
+    }
+  }
+
   console.log('(q) Quit');
+
 }
 
 function displayPrompt() {
@@ -74,6 +92,28 @@ function eatDot() {
   console.log('\nChomp!');
   score += 10;
 }
+function eatGhost(ghost) {
+  if (ghost.edible) {
+    score += 200;
+    console.log('\nYou ate ' + ghost.name + ' and that ghost is a ' + ghost.character + ' ghost!')
+    ghost.edible = false;
+  } else {
+    lives--;
+    console.log('\nThe ' + ghost.colour + ' ghost with a name of ' + ghost.name + ' just killed you!')
+  }
+}
+function gameOver() {
+  if (lives < 0) {
+    process.exit();
+  }
+}
+function eatPowerPellet() {
+  score += 50;
+  powerPellets--;
+  for (var step = 0; step < ghosts.length; step++) {
+    ghosts[step].edible = true;
+  }
+}
 
 
 // Process Player's Input
@@ -86,11 +126,31 @@ function processInput(key) {
     case 'd':
       eatDot();
       break;
+    case '1':
+      eatGhost(inky);
+      break;
+    case '2':
+      eatGhost(blinky);
+      break;
+    case '3':
+      eatGhost(pinky);
+      break;
+    case '4':
+      eatGhost(clyde);
+      break;
+    case 'p':
+      if (powerPellets > 0) {
+        eatPowerPellet();
+        break;
+      } else {
+        console.log('\nNo Power-Pellets left!');
+        break;
+      }
     default:
       console.log('\nInvalid Command!');
   }
+  gameOver();
 }
-
 
 //
 // YOU PROBABLY DON'T WANT TO CHANGE CODE BELOW THIS LINE
