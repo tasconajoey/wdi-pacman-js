@@ -2,7 +2,7 @@
 var score = 0;
 var lives = 2;
 var powerPellets = 4;
-
+var dots = 240;
 
 // Define your ghosts here
 var inky = {
@@ -58,16 +58,38 @@ function clearScreen() {
 function displayStats() {
   console.log('Score: ' + score + '     Lives: ' + lives);
   console.log('Power-Pellets: ' + powerPellets);
+  console.log('Dots: ' + dots);
 }
 
 function displayMenu() {
   console.log('\n\nSelect Option:\n');  // each \n creates a new line
-  console.log('(d) Eat Dot');
+  if (dots > 0) {
+    console.log('(d) Eat Dot');
+  } else {
+    console.log('');
+  }
+  if (dots > 10) {
+    console.log('(t) Eat Ten Dots');
+  } else {
+    console.log('');
+  }
+  if (dots > 100) {
+    console.log('(c) Eat One Hundred Dots');
+  } else {
+    console.log('');
+  }
+  if (dots > 0) {
+    console.log('(a) Eat All Dots');
+  } else {
+    console.log('');
+  }
   if (powerPellets > 0) {
     console.log('(p) Eat Power-Pellet');
   } else {
-    console.log('')
+    console.log('');
   }
+
+
 
   for (var step = 0; step < ghosts.length; step++) {
     if (ghosts[step].edible) {
@@ -91,7 +113,27 @@ function displayPrompt() {
 function eatDot() {
   console.log('\nChomp!');
   score += 10;
+  dots--;
 }
+
+function eatTenDots() {
+  console.log('\nChomp Chomp Chomp Chomp Chomp!!');
+  score += 100;
+  dots -= 10;
+}
+
+function eatCentiDots() {
+  console.log('\nChomp Chomp Chomp Chomp Chomp Chomp Chomp Chomp Chomp Chomp Chomp!!!');
+  score += 1000;
+  dots -= 100;
+}
+
+function eatAllDots() {
+  console.log('\nI\'m full!!!');
+  score += 100000;
+  dots -= dots;
+}
+
 function eatGhost(ghost) {
   if (ghost.edible) {
     score += 200;
@@ -124,8 +166,37 @@ function processInput(key) {
       process.exit();
       break;
     case 'd':
-      eatDot();
-      break;
+      if (dots > 0) {
+        eatDot();
+        break;
+      } else {
+        console.log('\nNo dots left');
+        break;
+      }
+    case 't':
+      if (dots > 10) {
+        eatTenDots();
+        break;
+      } else {
+        console.log('\nNot enough dots left');
+        break;
+      }
+    case 'c':
+      if (dots > 100) {
+        eatCentiDots();
+        break;
+      } else {
+        console.log('\nNot enough dots left');
+        break;
+      }
+    case 'a':
+      if (dots > 0) {
+        eatAllDots();
+        break;
+      } else {
+        console.log('\nNo dots left');
+        break;
+      }
     case '1':
       eatGhost(inky);
       break;
