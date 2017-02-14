@@ -4,6 +4,9 @@ var lives = 2;
 var powerPellets = 4;
 var dots = 240;
 var ghostValue = 200;
+var level = 1;
+var fruit = '';
+var fruitValue = 0;
 
 // Define your ghosts here
 var inky = {
@@ -61,6 +64,7 @@ function displayStats() {
   console.log('Power-Pellets: ' + powerPellets);
   console.log('Dots: ' + dots);
   console.log('Ghost-Value: ' + ghostValue)
+  console.log('Level: ' + level);
 }
 
 function displayMenu() {
@@ -80,6 +84,9 @@ function displayMenu() {
   if (dots > 0) {
     console.log('(a) Eat All Dots');
   } else {
+  }
+  if (dots < (Math.floor(Math.random() * 237) + 0)) {
+    console.log('(f) Eat ' + eatFruit());
   }
   if (powerPellets > 0) {
     console.log('(p) Eat Power-Pellet');
@@ -180,10 +187,48 @@ function eatPowerPellet() {
   ghostValue = 200;
   powerPellets--;
   for (var step = 0; step < ghosts.length; step++) {
-    ghosts[step].edible = true;
+      ghosts[step].edible = true;
   }
 }
-
+function newLevel() {
+  if (dots === 0 && powerPellets === 0) {
+    level++;
+    dots = 240;
+    powerPellets = 4;
+    for (var step = 0; step < ghosts.length; step++) {
+        ghosts[step].edible = false;
+    }
+  }
+}
+function eatFruit() {
+  if (level === 1) {
+    fruit = 'Cherry';
+    fruitValue = 100;
+  } else if (level === 2) {
+    fruit = 'Strawberry';
+    fruitValue = 300;
+  } else if (level === 3 || level === 4) {
+    fruit = 'Orange';
+    fruitValue = 500;
+  } else if (level === 5 || level === 6) {
+    fruit = 'Apple';
+    fruitValue = 700;
+  } else if (level === 7 || level === 8) {
+    fruit = 'Pineapple';
+    fruitValue = 1000;
+  } else if (level === 9 || level === 10) {
+    fruit = 'Galaxian Spaceship';
+    fruitValue = 2000;
+  } else if (level === 11 || level === 12) {
+    fruit = 'Bell'
+    fruitValue = 3000;
+  } else if (level >= 13) {
+    fruit = 'Key'
+    fruitValue = 5000;
+  }
+  score += (fruitValue / 2);
+  return fruit;
+}
 
 // Process Player's Input
 function processInput(key) {
@@ -198,6 +243,7 @@ function processInput(key) {
         break;
       } else {
         console.log('\nNo dots left');
+        score = score - 100;
         break;
       }
     case 't':
@@ -206,6 +252,7 @@ function processInput(key) {
         break;
       } else {
         console.log('\nNot enough dots left');
+        score = score - 100;
         break;
       }
     case 'c':
@@ -214,6 +261,7 @@ function processInput(key) {
         break;
       } else {
         console.log('\nNot enough dots left');
+        score = score - 100;
         break;
       }
     case 'a':
@@ -222,6 +270,16 @@ function processInput(key) {
         break;
       } else {
         console.log('\nNo dots left');
+        score = score - 100;
+        break;
+      }
+    case 'f':
+      if (dots < (Math.floor(Math.random() * 237) + 0)) {
+        eatFruit();
+        break;
+      } else {
+        console.log('\nNo ' + eatFruit() + '\'s at the moment.')
+        score = score - 100;
         break;
       }
     case '1':
@@ -247,6 +305,7 @@ function processInput(key) {
     default:
       console.log('\nInvalid Command!');
   }
+  newLevel();
   gameOver();
 }
 
