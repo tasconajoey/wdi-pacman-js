@@ -86,7 +86,7 @@ function displayMenu() {
   } else {
   }
   if (dots < (Math.floor(Math.random() * 237) + 0)) {
-    console.log('(f) Eat ' + eatFruit());
+    console.log('(f) Eat Fruit');
   }
   if (powerPellets > 0) {
     console.log('(p) Eat Power-Pellet');
@@ -226,7 +226,7 @@ function eatFruit() {
     fruit = 'Key'
     fruitValue = 5000;
   }
-  score += (fruitValue / 2);
+  score += fruitValue;
   return fruit;
 }
 
@@ -243,7 +243,7 @@ function processInput(key) {
         break;
       } else {
         console.log('\nNo dots left');
-        score = score - 100;
+        score = score;
         break;
       }
     case 't':
@@ -252,7 +252,7 @@ function processInput(key) {
         break;
       } else {
         console.log('\nNot enough dots left');
-        score = score - 100;
+        score = score;
         break;
       }
     case 'c':
@@ -261,7 +261,7 @@ function processInput(key) {
         break;
       } else {
         console.log('\nNot enough dots left');
-        score = score - 100;
+        score = score;
         break;
       }
     case 'a':
@@ -270,7 +270,7 @@ function processInput(key) {
         break;
       } else {
         console.log('\nNo dots left');
-        score = score - 100;
+        score = score;
         break;
       }
     case 'f':
@@ -278,8 +278,8 @@ function processInput(key) {
         eatFruit();
         break;
       } else {
-        console.log('\nNo ' + eatFruit() + '\'s at the moment.')
-        score = score - 100;
+        console.log('\nNo fruit\'s at the moment.')
+        score = score;
         break;
       }
     case '1':
