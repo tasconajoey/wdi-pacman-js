@@ -3,6 +3,7 @@ var score = 0;
 var lives = 2;
 var powerPellets = 4;
 var dots = 240;
+var ghostValue = 200;
 
 // Define your ghosts here
 var inky = {
@@ -59,6 +60,7 @@ function displayStats() {
   console.log('Score: ' + score + '     Lives: ' + lives);
   console.log('Power-Pellets: ' + powerPellets);
   console.log('Dots: ' + dots);
+  console.log('Ghost-Value: ' + ghostValue)
 }
 
 function displayMenu() {
@@ -66,27 +68,22 @@ function displayMenu() {
   if (dots > 0) {
     console.log('(d) Eat Dot');
   } else {
-    console.log('');
   }
-  if (dots > 10) {
+  if (dots > 9) {
     console.log('(t) Eat Ten Dots');
   } else {
-    console.log('');
   }
-  if (dots > 100) {
+  if (dots > 99) {
     console.log('(c) Eat One Hundred Dots');
   } else {
-    console.log('');
   }
   if (dots > 0) {
     console.log('(a) Eat All Dots');
   } else {
-    console.log('');
   }
   if (powerPellets > 0) {
     console.log('(p) Eat Power-Pellet');
   } else {
-    console.log('');
   }
 
 
@@ -136,7 +133,36 @@ function eatAllDots() {
 
 function eatGhost(ghost) {
   if (ghost.edible) {
-    score += 200;
+    // if (ghosts.length > 4) {
+    //   eatGhost.score += 200
+    //   ghosts--
+    // } else if (ghosts.length > 2 && ghosts.length < 4) {
+    //   eatGhost.score += 400
+    //   ghosts--
+    // } else if (ghosts.length > 1 && ghosts.length < 3) {
+    //   eatGhost.score += 800
+    //   ghosts--
+    // } else if (ghosts.length > 1 && ghosts.length < 3) {
+    //   eatGhost.score += 1600
+    //   ghosts--
+    // }
+    // if (eatenGhosts == (2 % 2) || eatenGhosts) {
+    //   score += 200
+    //   eatenGhosts += 1;
+    // } else if (eatenGhosts == (5 % 2) || ) {
+    //   score += 400
+    //   eatenGhosts += 1;
+    // } else if (eatenGhosts == (5 % 3) || ) {
+    //   score += 800
+    //   eatenGhosts += 1;
+    // } else if (eatenGhosts == (7 % 4) || ) {
+    //   score += 1600
+    //   eatenGhosts += 1;
+    // }
+
+    score += ghostValue;
+    ghostValue *= 2;
+
     console.log('\nYou ate ' + ghost.name + ' and that ghost is a ' + ghost.character + ' ghost!')
     ghost.edible = false;
   } else {
@@ -151,6 +177,7 @@ function gameOver() {
 }
 function eatPowerPellet() {
   score += 50;
+  ghostValue = 200;
   powerPellets--;
   for (var step = 0; step < ghosts.length; step++) {
     ghosts[step].edible = true;
@@ -174,7 +201,7 @@ function processInput(key) {
         break;
       }
     case 't':
-      if (dots > 10) {
+      if (dots > 9) {
         eatTenDots();
         break;
       } else {
@@ -182,7 +209,7 @@ function processInput(key) {
         break;
       }
     case 'c':
-      if (dots > 100) {
+      if (dots > 99) {
         eatCentiDots();
         break;
       } else {
